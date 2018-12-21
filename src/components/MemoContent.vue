@@ -60,13 +60,13 @@ export default {
     showMemo: function () {
       let content = this.$store.state.moduleMemo.content
       let title = this.$store.state.moduleMemo.title
-      let updateTime = this.$store.state.moduleMemo.updateTime.split('T')[0]
+      let createdTime = this.$store.state.moduleMemo.createdTime.split('T')[0]
       let num = parseInt(this.$route.path.split('/')[2])
       if (content !== '') {
         if (content.substr(0, 2) === '![') {
           content = content.split('$\r\n')[1]
         }
-        this.rawHtml = '<hr></hr><h1>' + title + '</h1>' + '<div class="memoMeta"><span>' + updateTime + '</span></div>' + marked(content || '', {sanitize: true})
+        this.rawHtml = '<hr></hr><h1>' + title + '</h1>' + '<div class="memoMeta"><span>' + createdTime + '</span></div>' + marked(content || '', {sanitize: true})
         this.loading = false
       } else {
         console.log(num)
@@ -75,8 +75,8 @@ export default {
             this.loading = false
             content = response.data.body.split('<!--summary-->')[2]
             title = response.data.title
-            updateTime = response.data.updated_at.split('T')[0]
-            this.rawHtml = '<hr></hr><h1>' + title + '</h1>' + '<div class="memoMeta"><span>' + updateTime + '</span></div>' + marked(content || '', {sanitize: true})
+            createdTime = response.data.created_at.split('T')[0]
+            this.rawHtml = '<hr></hr><h1>' + title + '</h1>' + '<div class="memoMeta"><span>' + createdTime + '</span></div>' + marked(content || '', {sanitize: true})
           }, (error) => {
             console.log(error)
             this.$router.push({path: '/error403'})

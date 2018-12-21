@@ -60,10 +60,10 @@ export default {
     showArticle: function () {
       let content = this.$store.state.moduleArticle.content
       let title = this.$store.state.moduleArticle.title
-      let updateTime = this.$store.state.moduleArticle.updateTime.split('T')[0]
+      let createdTime = this.$store.state.moduleArticle.createdTime.split('T')[0]
       let num = parseInt(this.$route.path.split('/')[2])
       if (content !== '') {
-        this.rawHtml = '<hr></hr><h1>' + title + '</h1>' + '<div class="articleMeta"><span>' + updateTime + '</span></div>' + marked(content || '', {sanitize: true})
+        this.rawHtml = '<hr></hr><h1>' + title + '</h1>' + '<div class="articleMeta"><span>' + createdTime + '</span></div>' + marked(content || '', {sanitize: true})
         this.loading = false
       } else {
         axios.get('https://api.github.com/repos/MichaelMa666/MichaelMa666.github.io/issues', {headers: {'Authorization': 'token ' + this.$store.state.accessToken}})
@@ -71,8 +71,8 @@ export default {
             this.loading = false
             content = response.data[response.data.length - num].body
             title = response.data[response.data.length - num].title
-            updateTime = response.data[response.data.length - num].updated_at.split('T')[0]
-            this.rawHtml = '<hr></hr><h1>' + title + '</h1>' + '<div class="articleMeta"><span>' + updateTime + '</span></div>' + marked(content || '', {sanitize: true})
+            createdTime = response.data[response.data.length - num].created_at.split('T')[0]
+            this.rawHtml = '<hr></hr><h1>' + title + '</h1>' + '<div class="articleMeta"><span>' + createdTime + '</span></div>' + marked(content || '', {sanitize: true})
           }, (error) => {
             console.log(error)
             this.$router.push({path: '/error403'})
